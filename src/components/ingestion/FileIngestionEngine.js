@@ -1,4 +1,4 @@
-import fs from 'fs'
+import fsm from 'fs-minipass'
 import AbstractIngestionEngine from '%src/components/ingestion/AbstractIngestionEngine'
 
 /**
@@ -14,20 +14,9 @@ class FileIngestionEngine extends AbstractIngestionEngine {
 		if (!path) {
 			throw new Error('path required') // TODO: should probably be FileInstantiationError
 		}
-		super()
 
-		this.path = path
+		super(new fsm.ReadStreamSync(path))
 	}
-
-	// The path of the file to read by the engine
-	path = null
-
-	/**
-	 * The ReadableStream that is being ingested by the ingestion engine.
-	 *
-	 * @return {ReadableStream} The stream of data to be ingested by the ingestion engine
-	 */
-	getInputStream = () => fs.createReadStream(this.path)
 }
 
 export default FileIngestionEngine
